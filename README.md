@@ -49,7 +49,7 @@ The dataset contains two categories:
 
 The dataset has a relatively balanced distribution between the two classes.
 ![Distribution of News Labels](Images/label1,0.png)
-
+Displays descriptive statistics for headline and article word counts, including mean, standard deviation, median, quartiles and maximum values.
 ![Headline and Article Word Count Summary](Images/word_count.png)
 ## 4. Exploratory Data Analysis (EDA)
 
@@ -102,15 +102,16 @@ The word-count distributions of headlines and article texts were examined using 
 - Mean word count: 12.27
 - Median word count: 12
 - Maximum word count: 72
-
+![Distribution of Headline Lengths](Images/article_length.png)
 **Article text statistics:**
 
 - Mean word count: 540.84
 - Median word count: 399
 - Maximum word count: 24,234
-
+![Distribution of Article Lengths](Images/articlelebtgh.png)
 The median headline and article lengths were also compared across the two labels.
-
+![Headline Length by Label](Images/head_label.png)
+Compares headline word counts between fake and real news. Real news headlines have a higher median word count, with several longer-headline outliers.
 | Label | Median headline length | Median article length |
 |---|---:|---:|
 | Fake News (0) | 11 | 427 |
@@ -199,7 +200,8 @@ It estimates the probability of an article belonging to either the fake or real 
 
 Parameter:
 - max_iter = 1000
-
+![Confusion Matrix - Logistic Regression](Images/LR.png)
+Evaluates Logistic Regression classification performance. The model correctly classified 9,863 fake news articles and 10,712 real news articles.
 ### 8.2 Multinomial Naive Bayes
 
 Multinomial Naive Bayes was implemented as a probability-based classification approach.
@@ -208,7 +210,8 @@ It uses word-feature information to estimate the probability of a news article b
 
 Parameter:
 - alpha = 1.0
-
+![Confusion Matrix - Naive Bayes](Images/NB.png)
+Shows the classification performance of Multinomial Naive Bayes. It correctly classified 8,801 fake news articles and 9,956 real news articles.
 ### 8.3 Linear Support Vector Machine (Linear SVM)
 
 Linear SVM was implemented to identify a decision boundary that separates fake and real news articles in the TF-IDF feature space.
@@ -217,7 +220,8 @@ Parameter:
 - C = 1.0
 
 All three models were implemented using Scikit-learn pipelines containing TF-IDF vectorization and the respective classifier.
-
+![Confusion Matrix - Linear SVM](Images/SVM.png)
+Shows the classification performance of Linear SVM. It correctly classified 10,030 fake news articles and 10,824 real news articles.
 ## 9. Model Evaluation
 
 The models were evaluated using the following metrics:
