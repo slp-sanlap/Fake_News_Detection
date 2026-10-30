@@ -112,7 +112,7 @@ The word-count distributions of headlines and article texts were examined using 
 - Maximum word count: 72
 
 
-![Distribution of Headline Lengths](Images/article_length.png)
+![Distribution of Headline Lengths](Images/disti_length.png)
 
 
 **Article text statistics:**
