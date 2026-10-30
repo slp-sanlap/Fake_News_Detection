@@ -1,108 +1,392 @@
-# Fake_News_Detection_MS24011
+# Fake News Detection Using Machine Learning
 
-## About the Project
+## 1. Project Overview
 
-This project explores whether a news article can be classified as fake or real based on its text.
+This project explores the application of Natural Language Processing (NLP) and Machine Learning techniques to classify news articles as **Fake News or Real News**.
 
-I used the WELFake dataset and started with exploratory data analysis (EDA) to understand the data, examine the distribution of fake and real news, check missing values and duplicates, and look at differences in headline and article lengths.
+Using the WELFake dataset, I performed Exploratory Data Analysis (EDA), text preprocessing, feature extraction using TF-IDF, and trained three different machine learning classifiers.
 
-After exploring the dataset, I cleaned the article text and used TF-IDF to convert it into numerical features. I then trained three machine learning models and compared their performance. I also used confusion matrices and misclassified examples to understand where the models make mistakes.
+The performance of the models was evaluated using accuracy, precision, recall, F1-score, confusion matrices, and error analysis.
 
-## Dataset
+The main objective was to investigate how effectively machine learning algorithms can identify patterns in news articles and distinguish between the two categories.
 
-The project uses the **WELFake Dataset**, which contains news articles with their text and corresponding labels.
+## 2. Project Objectives
 
-The labels used in this project are:
+- Explore and understand the structure of the WELFake dataset.
+- Perform Exploratory Data Analysis to identify patterns and characteristics.
+- Examine missing values, duplicate entries, and text-length distributions.
+- Clean and preprocess textual data for machine learning.
+- Convert textual information into numerical features using TF-IDF.
+- Train and compare different machine learning classifiers.
+- Evaluate model performance using standard classification metrics.
+- Perform error analysis to understand misclassified news articles.
 
-- `0` — Fake News
-- `1` — Real News
+## 3. Dataset Description
 
-The dataset is stored in CSV format as `WELFake_Dataset.csv`.
+**Dataset:** WELFake Dataset
 
-The dataset is included in this repository in Raw data folder.
+The dataset contains 72,134 news records with the following columns:
 
-## Project Workflow
+| Column | Description |
+|---|---|
+| Unnamed: 0 | Dataset index |
+| title | Headline of the news article |
+| text | Main article text |
+| label | Classification label |
 
-### 1. Exploratory Data Analysis (EDA)
+### Label Distribution
 
-I explored the dataset to understand its structure and identify patterns before training the models.
+The dataset contains two categories:
 
-This included:
+- `0` = Fake News
+- `1` = Real News
 
-- Checking the number of rows and columns.
-- Examining the distribution of fake and real news.
-- Checking missing values and duplicate rows.
-- Inspecting repeated headlines and article texts.
-- Comparing headline and article word counts.
-- Finding frequently occurring words in both classes.
-- Visualizing text-length distributions and category-wise differences.
+| Category | Number of articles | Percentage |
+|---|---:|---:|
+| Fake News (0) | 35,028 | 48.56% |
+| Real News (1) | 37,106 | 51.44% |
+| **Total** | **72,134** | **100%** |
+![Image description](label 1,0.png)
+The dataset has a relatively balanced distribution between the two classes.
 
-### 2. Text Preprocessing
+## 4. Exploratory Data Analysis (EDA)
 
-I cleaned the news text before using it for machine learning.
+Exploratory Data Analysis was performed to understand the dataset before applying machine learning techniques.
 
-The preprocessing steps included:
+### 4.1 Dataset Structure
 
+- Total records: 72,134
+- Total columns: 4
+- Data types: Integer and Object
+
+### 4.2 Missing Values
+
+The initial missing-value analysis showed:
+
+| Column | Missing values |
+|---|---:|
+| Unnamed: 0 | 0 |
+| title | 558 |
+| text | 39 |
+| label | 0 |
+
+Missing values were inspected before proceeding with preprocessing.
+
+### 4.3 Duplicate Analysis
+
+Duplicate entries were investigated using:
+
+- Exact duplicate rows
+- Repeated titles
+- Repeated article texts
+- Repeated title-text combinations
+
+Observations:
+
+- Exact duplicate rows: 0
+- Repeated title occurrences: 9,786
+- Repeated text occurrences: 9,415
+- Repeated title-text pair occurrences: 8,456
+- Title-text groups with conflicting labels: 0
+
+This analysis helped identify repeated content within the dataset.
+
+### 4.4 Text Length Distribution
+
+The word-count distributions of headlines and article texts were examined using histograms and box plots.
+
+**Headline statistics:**
+
+- Mean word count: 12.27
+- Median word count: 12
+- Maximum word count: 72
+
+**Article text statistics:**
+
+- Mean word count: 540.84
+- Median word count: 399
+- Maximum word count: 24,234
+
+The median headline and article lengths were also compared across the two labels.
+
+| Label | Median headline length | Median article length |
+|---|---:|---:|
+| Fake News (0) | 11 | 427 |
+| Real News (1) | 13 | 369 |
+
+These differences indicate variations in text length between the two categories, although text length alone cannot determine whether an article is fake or real.
+
+### 4.5 Word Frequency Analysis
+
+The most frequently occurring words were examined separately for both labels.
+
+The analysis involved:
 - Converting text to lowercase.
-- Removing URLs.
-- Removing punctuation and non-alphabetic characters.
-- Removing English stop words.
-- Handling missing text by replacing it with an empty string for text processing.
+- Removing punctuation.
+- Identifying frequently occurring words.
+- Comparing frequent words between the two categories.
 
-### 3. Train-Test Split
+Stop-word removal was subsequently applied during text preprocessing to focus on more informative terms.
 
-I split the dataset into training and testing sets using a **70:30 ratio**.
+## 5. Text Preprocessing
 
-I used stratified sampling to preserve the distribution of the two labels in both sets, with a fixed random state for reproducibility.
+Text preprocessing was performed to prepare the news articles for machine learning.
 
-### 4. TF-IDF Feature Extraction
+The following operations were implemented:
 
-I used **TF-IDF (Term Frequency–Inverse Document Frequency)** to convert the cleaned article text into numerical features.
+1. Converted text into lowercase.
+2. Removed URLs and website links.
+3. Removed punctuation and non-alphabetic characters.
+4. Tokenized text into individual words.
+5. Removed English stop words using Scikit-learn's `ENGLISH_STOP_WORDS`.
+6. Joined the cleaned tokens back into text.
 
-The vectorizer was configured to use:
+Missing article texts were handled using empty strings during preprocessing.
 
-- A maximum of 20,000 features.
-- Unigrams and bigrams.
-- A minimum document frequency of 2.
-- A maximum document frequency of 95%.
+**Important:** The article text (`text` column), rather than the headline, was used as the primary input feature for model training.
 
-This representation allows the models to learn patterns from individual words and pairs of words in the articles.
+## 6. Train-Test Split
 
-### 5. Machine Learning Models
+The dataset was divided into training and testing subsets using `train_test_split()`.
 
-I trained and compared three classifiers:
+Parameters:
 
-- **Logistic Regression** — a linear classification model used as a baseline.
-- **Multinomial Naive Bayes** — a probabilistic classifier commonly used for text classification.
-- **Linear Support Vector Machine (Linear SVM)** — a linear model that learns a decision boundary between fake and real news.
+- Training set: 70%
+- Testing set: 30%
+- Random state: 42
+- Stratification: Enabled
 
-### 6. Model Evaluation
+| Dataset | Number of records |
+|---|---:|
+| Training set | 50,493 |
+| Testing set | 21,641 |
 
-I evaluated the models on the test set and compared their results using:
+Stratification was used to maintain the original class distribution in both subsets.
 
-- Accuracy
-- Macro precision
-- Macro recall
-- Macro F1-score
+## 7. Feature Extraction Using TF-IDF
 
-I also generated confusion matrices to examine how often fake news was correctly identified, how often real news was correctly identified, and where the models confused the two classes.
+Machine learning algorithms require numerical input. Therefore, TF-IDF (Term Frequency–Inverse Document Frequency) was used to transform the cleaned news articles into numerical feature vectors.
 
-### 7. Error Analysis
+The following parameters were used:
 
-I used the Linear SVM model to examine misclassified articles and identify false positives and false negatives.
+| Parameter | Value | Purpose |
+|---|---|---|
+| max_features | 20,000 | Limits the vocabulary to 20,000 features |
+| ngram_range | (1, 2) | Considers individual words and two-word combinations |
+| min_df | 2 | Ignores terms appearing in fewer than two documents |
+| max_df | 0.95 | Ignores terms appearing in more than 95% of documents |
+| stop_words | English | Removes English stop words |
+| sublinear_tf | True | Applies logarithmic scaling to term frequency |
 
-This helped me look beyond the overall scores and investigate examples where the model predicted the wrong label.
+The resulting training and testing feature matrices had the following dimensions:
 
-## Technologies Used
+- Training matrix: (50,493, 20,000)
+- Testing matrix: (21,641, 20,000)
+
+TF-IDF was fitted on the training data and then applied to the testing data through the model pipelines.
+
+## 8. Machine Learning Models
+
+Three machine learning algorithms were implemented and compared.
+
+### 8.1 Logistic Regression
+
+Logistic Regression was used as a baseline classification model.
+
+It estimates the probability of an article belonging to either the fake or real news category.
+
+Parameter:
+- max_iter = 1000
+
+### 8.2 Multinomial Naive Bayes
+
+Multinomial Naive Bayes was implemented as a probability-based classification approach.
+
+It uses word-feature information to estimate the probability of a news article belonging to a particular category.
+
+Parameter:
+- alpha = 1.0
+
+### 8.3 Linear Support Vector Machine (Linear SVM)
+
+Linear SVM was implemented to identify a decision boundary that separates fake and real news articles in the TF-IDF feature space.
+
+Parameter:
+- C = 1.0
+
+All three models were implemented using Scikit-learn pipelines containing TF-IDF vectorization and the respective classifier.
+
+## 9. Model Evaluation
+
+The models were evaluated using the following metrics:
+
+- **Accuracy:** Overall proportion of correctly classified articles.
+- **Precision:** Proportion of predicted positive classifications that were correct.
+- **Recall:** Proportion of actual positive classifications correctly identified.
+- **Macro F1-score:** Harmonic mean of precision and recall, calculated independently for both classes and averaged equally.
+
+### 9.1 Model Comparison
+
+The following results were obtained on the test dataset:
+
+| Model | Accuracy | Macro Precision | Macro Recall | Macro F1 |
+|---|---:|---:|---:|---:|
+| Logistic Regression | 95.07% | 95.11% | 95.04% | 95.07% |
+| Naive Bayes | 86.67% | 86.78% | 86.59% | 86.64% |
+| Linear SVM | **96.36%** | **96.39%** | **96.34%** | **96.36%** |
+
+### 9.2 Model Performance Observations
+
+- Linear SVM achieved the highest accuracy and macro F1-score among the three models.
+- Logistic Regression also demonstrated strong classification performance.
+- Multinomial Naive Bayes achieved comparatively lower performance.
+- Linear SVM performed best on the given test dataset.
+
+Based on these results, Linear SVM was selected for further examination through error analysis.
+
+## 10. Confusion Matrix and Error Analysis
+
+A confusion matrix was generated to examine the classification performance of the models.
+
+The confusion matrix helps distinguish between:
+
+- True Positives
+- True Negatives
+- False Positives
+- False Negatives
+
+For this project, the two classification errors were examined as follows:
+
+**False Positive:** An actual real news article classified as fake.
+
+**False Negative:** An actual fake news article classified as real.
+
+### 10.1 Linear SVM Error Analysis
+
+The Linear SVM model produced the following results:
+
+| Error category | Number of articles |
+|---|---:|
+| False Positives (Real → Fake) | 308 |
+| False Negatives (Fake → Real) | 479 |
+| Total misclassified articles | 787 |
+
+The model's test accuracy was 96.36%.
+
+### 10.2 Examination of Misclassified Headlines
+
+Examples of incorrectly classified headlines were extracted for all three models.
+
+Some examples from the Linear SVM error analysis included:
+
+- "What a Sensory Isolation Tank Taught Me About ..."
+- "Cuba releases all 53 political prisoners to co..."
+- "Making the Transition Less Chaotic"
+- "JIMMY KIMMEL: Republicans ‘Should Be Praying f..."
+
+The actual and predicted labels were compared to identify classification errors.
+
+This step provided an opportunity to examine cases where the models failed to correctly classify news articles.
+
+Misclassification can arise from ambiguous wording, overlapping vocabulary, contextual information, and patterns that may not be sufficiently captured by the selected features.
+
+## 11. Key Findings
+
+The project produced several observations:
+
+1. The WELFake dataset contains a relatively balanced distribution of fake and real news articles.
+2. The two categories exhibit differences in headline and article-length distributions.
+3. TF-IDF successfully transformed textual information into numerical features suitable for machine learning.
+4. Linear SVM achieved the best overall performance among the three classifiers.
+5. Logistic Regression also performed well, achieving an accuracy of approximately 95%.
+6. Error analysis revealed that the model still misclassified some articles despite its high overall accuracy.
+
+The results demonstrate the usefulness of classical machine learning algorithms for text classification.
+
+## 12. Limitations
+
+- The classification models depend on the patterns and labels present in the training dataset.
+- High classification accuracy does not guarantee that a news article is factually true or false.
+- The models primarily learn textual patterns rather than independently verifying claims.
+- The dataset may contain biases, repeated content, and limitations in its original labels.
+- Further testing on independent and more recent news datasets would be necessary to evaluate generalization.
+
+Therefore, this project should be considered a text-classification experiment rather than a fact-checking system.
+
+## 13. Technologies and Libraries Used
 
 - Python
+- Jupyter Notebook
 - Pandas
 - NumPy
 - Matplotlib
+- Seaborn
+- Regular Expressions (re)
 - Scikit-learn
-- Regular expressions
-- Jupyter Notebook / Google Colab
+- TF-IDF Vectorization
+- Logistic Regression
+- Multinomial Naive Bayes
+- Linear Support Vector Machine
 
+## 14. Project Structure
+
+```text
+Fake-News-Detection/
+│
+├── Fake_news_project.ipynb
+├── README.md
+├── requirements.txt
+│
+├── false_positive_examples.csv
+├── false_negative_examples.csv
+└── all_test_predictions.csv
+```
+
+*The CSV files should be included only if they are exported and added to the repository.*
+
+The WELFake dataset CSV is not included in this structure and needs to be obtained separately.
+
+## 15. How to Run the Project
+
+1. Clone the repository:
+
+```bash
+git clone <your-repository-link>
+```
+
+2. Navigate to the project directory:
+
+```bash
+cd Fake-News-Detection
+```
+
+3. Install the required libraries:
+
+```bash
+pip install pandas numpy matplotlib seaborn scikit-learn jupyter
+```
+
+4. Obtain the WELFake dataset and place `WELFake_Dataset.csv` in the project directory.
+
+5. Open the Jupyter Notebook:
+
+```bash
+jupyter notebook
+```
+
+6. Open `Fake_news_project.ipynb` and execute the cells sequentially.
+
+## 16. Conclusion
+
+This project provided practical experience in applying Natural Language Processing and classical Machine Learning algorithms to a real-world text-classification problem.
+
+Starting with Exploratory Data Analysis, the workflow progressed through text preprocessing, TF-IDF feature extraction, model training, evaluation, and error analysis.
+
+Among the three models investigated, Linear SVM achieved the highest test accuracy of **96.36%**, followed by Logistic Regression at 95.07% and Multinomial Naive Bayes at 86.67%.
+
+Beyond comparing model performance, the project highlighted the importance of examining misclassified examples and understanding the limitations of automated text classification.
+
+The project strengthened my understanding of the end-to-end machine learning workflow, particularly in handling textual datasets and evaluating classification models.
 ## How to Run the Project
 1. Clone or download this repository.
 2. Download the dataset and place `WELFake_Dataset.csv` from the Raw data folder.
