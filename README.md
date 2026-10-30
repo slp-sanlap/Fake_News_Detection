@@ -46,9 +46,9 @@ The dataset contains two categories:
 | Fake News (0) | 35,028 | 48.56% |
 | Real News (1) | 37,106 | 51.44% |
 | **Total** | **72,134** | **100%** |
-![Image description](label 1,0.png)
-The dataset has a relatively balanced distribution between the two classes.
 
+The dataset has a relatively balanced distribution between the two classes.
+![Image description](label 1,0.png)
 ## 4. Exploratory Data Analysis (EDA)
 
 Exploratory Data Analysis was performed to understand the dataset before applying machine learning techniques.
