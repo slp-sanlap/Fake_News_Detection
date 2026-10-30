@@ -53,10 +53,6 @@ The dataset has a relatively balanced distribution between the two classes.
 ![Distribution of News Labels](Images/label1,0.png)
 
 
-Displays descriptive statistics for headline and article word counts, including mean, standard deviation, median, quartiles and maximum values.
-
-
-![Headline and Article Word Count Summary](Images/word_count.png)
 
 
 ## 4. Exploratory Data Analysis (EDA)
@@ -112,7 +108,7 @@ The word-count distributions of headlines and article texts were examined using 
 - Maximum word count: 72
 
 
-![Distribution of Headline Lengths](Images/disti_length.png)
+
 
 
 **Article text statistics:**
@@ -123,7 +119,24 @@ The word-count distributions of headlines and article texts were examined using 
 
 
 
-![Distribution of Article Lengths](Images/articlelebtgh.png)
+
+
+
+
+
+
+Compares headline word counts between fake and real news. Real news headlines have a higher median word count, with several longer-headline outliers.
+
+Displays descriptive statistics for headline and article word counts, including mean, standard deviation, median, quartiles and maximum values.
+
+
+![Headline and Article Word Count Summary](Images/word_count.png)
+
+
+| Label | Median headline length | Median article length |
+|---|---:|---:|
+| Fake News (0) | 11 | 427 |
+| Real News (1) | 13 | 369 |
 
 
 The median headline and article lengths were also compared across the two labels.
@@ -132,15 +145,12 @@ The median headline and article lengths were also compared across the two labels
 ![Headline Length by Label](Images/head_label.png)
 
 
-Compares headline word counts between fake and real news. Real news headlines have a higher median word count, with several longer-headline outliers.
-
-
-| Label | Median headline length | Median article length |
-|---|---:|---:|
-| Fake News (0) | 11 | 427 |
-| Real News (1) | 13 | 369 |
-
 These differences indicate variations in text length between the two categories, although text length alone cannot determine whether an article is fake or real.
+
+![Distribution of Headline Lengths](Images/disti_length.png)
+
+![Distribution of Article Lengths](Images/articlelebtgh.png)
+
 
 ### 4.5 Word Frequency Analysis
 
@@ -223,8 +233,14 @@ It estimates the probability of an article belonging to either the fake or real 
 
 Parameter:
 - max_iter = 1000
+
+
 ![Confusion Matrix - Logistic Regression](Images/LR.png)
+
+
 Evaluates Logistic Regression classification performance. The model correctly classified 9,863 fake news articles and 10,712 real news articles.
+
+
 ### 8.2 Multinomial Naive Bayes
 
 Multinomial Naive Bayes was implemented as a probability-based classification approach.
@@ -234,8 +250,11 @@ It uses word-feature information to estimate the probability of a news article b
 Parameter:
 - alpha = 1.0
 
-- 
+
+
 ![Confusion Matrix - Naive Bayes](Images/NB.png)
+
+
 Shows the classification performance of Multinomial Naive Bayes. It correctly classified 8,801 fake news articles and 9,956 real news articles.
 
 
@@ -246,6 +265,7 @@ Linear SVM was implemented to identify a decision boundary that separates fake a
 Parameter:
 - C = 1.0
 
+
 All three models were implemented using Scikit-learn pipelines containing TF-IDF vectorization and the respective classifier.
 
 
@@ -253,6 +273,8 @@ All three models were implemented using Scikit-learn pipelines containing TF-IDF
 
 
 Shows the classification performance of Linear SVM. It correctly classified 10,030 fake news articles and 10,824 real news articles.
+
+
 ## 9. Model Evaluation
 
 The models were evaluated using the following metrics:
@@ -365,53 +387,18 @@ Therefore, this project should be considered a text-classification experiment ra
 - Multinomial Naive Bayes
 - Linear Support Vector Machine
 
-## 14. Project Structure
 
-```text
-Fake-News-Detection/
-│
-├── Fake_news_project.ipynb
-├── README.md
-├── requirements.txt
-│
-├── false_positive_examples.csv
-├── false_negative_examples.csv
-└── all_test_predictions.csv
-```
 
-*The CSV files should be included only if they are exported and added to the repository.*
+## 14. How to Run the Project
+1. Clone or download this repository.
+2. Download the dataset and place `WELFake_Dataset.csv` from the Raw data folder.
+3.  Open `Fake_news_project.ipynb` in Jupyter Notebook or upload it to Google Colab.
+4. Run the cells in order, from data loading and EDA through model training, evaluation, and error analysis.
 
-The WELFake dataset CSV is not included in this structure and needs to be obtained separately.
-
-## 15. How to Run the Project
-
-1. Clone the repository:
-
-```bash
-git clone <your-repository-link>
-```
-
-2. Navigate to the project directory:
-
-```bash
-cd Fake-News-Detection
-```
-
-3. Install the required libraries:
-
-```bash
-pip install pandas numpy matplotlib seaborn scikit-learn jupyter
-```
-
-4. Obtain the WELFake dataset and place `WELFake_Dataset.csv` in the project directory.
-
-5. Open the Jupyter Notebook:
-
-```bash
-jupyter notebook
-```
-
-6. Open `Fake_news_project.ipynb` and execute the cells sequentially.
+## 15. Group Member
+1. Sanlap Tarafder (MS24011)
+2. Chayan Banerjee (MS24013)
+3. Surajit Shit    (MS24169)
 
 ## 16. Conclusion
 
@@ -424,17 +411,6 @@ Among the three models investigated, Linear SVM achieved the highest test accura
 Beyond comparing model performance, the project highlighted the importance of examining misclassified examples and understanding the limitations of automated text classification.
 
 The project strengthened my understanding of the end-to-end machine learning workflow, particularly in handling textual datasets and evaluating classification models.
-## How to Run the Project
-1. Clone or download this repository.
-2. Download the dataset and place `WELFake_Dataset.csv` from the Raw data folder.
-3.  Open `Fake_news_project.ipynb` in Jupyter Notebook or upload it to Google Colab.
-4. Run the cells in order, from data loading and EDA through model training, evaluation, and error analysis.
-
-## Repository Contents
-
-- `Fake_news_project.ipynb` — notebook containing data exploration, text preprocessing, model training, evaluation, and error analysis.
-- `WELFake_Dataset.csv` — the input dataset, which must be downloaded separately.
-
 
 
 ---
