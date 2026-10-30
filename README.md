@@ -48,7 +48,7 @@ The dataset contains two categories:
 | **Total** | **72,134** | **100%** |
 
 The dataset has a relatively balanced distribution between the two classes.
-![Image description](Images/label 1,0.png)
+![Distribution of News Labels](Images/label%201%2C0%281%29.png)
 ## 4. Exploratory Data Analysis (EDA)
 
 Exploratory Data Analysis was performed to understand the dataset before applying machine learning techniques.
