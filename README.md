@@ -330,6 +330,10 @@ The Linear SVM model produced the following results:
 | False Negatives (Fake → Real) | 479 |
 | Total misclassified articles | 787 |
 
+
+![Confusion Matrix - WELFake Classifier](Images/Welfaek.png)
+
+
 The model's test accuracy was 96.36%.
 
 ### 10.2 Examination of Misclassified Headlines
