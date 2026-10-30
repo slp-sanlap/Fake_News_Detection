@@ -49,6 +49,8 @@ The dataset contains two categories:
 
 The dataset has a relatively balanced distribution between the two classes.
 ![Distribution of News Labels](Images/label1,0.png)
+
+![Headline and Article Word Count Summary](Images/word_count.png)
 ## 4. Exploratory Data Analysis (EDA)
 
 Exploratory Data Analysis was performed to understand the dataset before applying machine learning techniques.
